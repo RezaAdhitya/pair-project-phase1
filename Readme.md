@@ -1,12 +1,14 @@
-Project member:
+## Project member:
   1. Reza
   2. Ika
   
-Theme: E-commerce
+## Theme: 
+E-commerce
 
-MVP Feature: Multer
+## MVP Feature: 
+Multer
 
-Pages:
+## Pages:
 - navbar (Home, Categories, Cart, profile, login/logout)
 - Landing page (ada tombol login dan register)
 - Category List
@@ -16,3 +18,9 @@ Pages:
 - Profile edit (delete cuma admin)
 - Product Add (role access = admin & seller)
 - Product Edit (role access = admin & seller)
+
+# Change Log
+
+|No| Changes | Notes |
+|--|---------|-------|
+|1| Setting up back-end #1 | <ul><li>create db</li><li>migrating tables</li><li>setting relationship</li><li>migrating tables</li><li>seeding</li></ul> |
