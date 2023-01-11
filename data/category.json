@@ -1,0 +1,22 @@
+[
+  {
+    "name":"Alat Tulis",
+    "description": "Kebutuhan peralatan tulis menulis, seperti bolpen, pensil, spidol, dan lain-lain"
+  },
+  {
+    "name":"Dokumen Organizer",
+    "description": "Kebutuhan organisasi surat menyurat, seperti folder, map, binder, dan lain-lain"
+  },
+  {
+    "name":"Kertas",
+    "description": "Barang-barang berbahan kertas, seperti kertas HVS, sticky notes, looseleaf, dan lain-lain"
+  },
+  {
+    "name":"Buku catatan",
+    "description": "Berbagai buku-buku untuk kebutuhan mencatat, seperti notebook, folio book, buku akuntansi, dan lain-lain"
+  },
+  {
+    "name":"Stationary Elektronik",
+    "description": "Barang-barang elektronik, seperti kalkulator, kamus elektronik, printer, dan lain-lain"
+  }
+]
