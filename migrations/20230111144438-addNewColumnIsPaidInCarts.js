@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up (queryInterface, Sequelize) {
-    return queryInterface.addColumn('Carts', 'isPaid', Sequelize.INTEGER)
+    return queryInterface.addColumn('Carts', 'isPaid', Sequelize.BOOLEAN)
     /**
      * Add altering commands here.
      *
