@@ -1,9 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const categoryRoute = require('./category');
-const userRouter = require('./routers/users')
-const categoryRouter = require('./routers/categories')
-const productRouter = require('./routers/products')
+const userRouter = require('./user')
+const productRouter = require('./product')
 
 
 router.get('/', (req, res) => {
@@ -17,12 +16,19 @@ app.use('/', router)
 app.use('/products', productRouter)
 
 // categories
-app.use('/categories', categoryRouter)
+router.use('/categories', categoryRoute)
 
 // users
 app.use('/users', userRouter)
 
-// define the about route
-router.use('/categories', categoryRoute)
+// login
+app.get('/login')
+app.post('/login')
+
+// register
+app.get('/register')
+app.post('/register')
+
+
 
 module.exports = router
