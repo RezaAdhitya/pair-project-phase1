@@ -175,13 +175,32 @@ class Controller {
   static confirmPay(req, res){
     let cartId = req.params.cartId;
 
-    Cart.update({
-      isPaid: true
-    }, {
+    Cart.findOne({
       where: {
         id: cartId
       }
+    }).then((cartResult) => {
+      console.log(cartResult);
+
+      return Product.decrement('stock', {
+        where: {
+          id: cartResult.ProductId,
+          stock: {
+            [Op.ne]: 0
+          }
+        },
+        by: cartResult.amount
+      })
     }).then((result) => {
+      return Cart.update({
+        isPaid: true
+      }, {
+        where: {
+          id: cartId
+        }
+      })
+    }).then((result2) => {
+      // console.log(result);
       res.redirect('/carts')
     }).catch((err) => {
       res.render("error", {err})

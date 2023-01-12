@@ -25,8 +25,10 @@
                 </tr>
             </thead>
             <tbody>
+            
                 <% cart.forEach((el, index) => { 
                     if(!el.isPaid || el.User.role === 'Admin'){ %>
+                    
                 <tr>
                     <td><%= ++index %></td>
                     <td><%= el.transactionCode %></td>
@@ -36,6 +38,7 @@
                     <td><%= el.amount %></td>
                     <td><%= convertRp(el.getTotalPayment(el.Product.price)) %></td>
                     <td>
+
                         <% if(el.isPaid !== true) { %>
                         <a href="/carts/<%= el.id %>/add" class="btn btn-outline-success">+</a>
                         <a href="/carts/<%= el.id %>/sub" class="btn btn-outline-warning">-</a>
@@ -44,10 +47,9 @@
                             <button href="/carts/<%= el.id %>/confirm" class="btn btn-success" disabled>Paid!</button>
                         <% } %>
                             <a href="/carts/<%= el.id %>/delete" class="btn btn-outline-danger">Delete</a>
-                    
                     </td>
                 </tr>
-                <% }}) %>
+                <% }) %>
             </tbody>
         </table>
     </div>
