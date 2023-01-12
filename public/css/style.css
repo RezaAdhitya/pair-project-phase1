@@ -29,3 +29,19 @@
 a + a {
   margin-left: 1rem;
 }
+
+.card > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  max-height: 400px;
+  object-position: center;
+}
+
+.custom-3 {
+  height: 30vh;
+}
+
+.custom-3 > h3 {
+}

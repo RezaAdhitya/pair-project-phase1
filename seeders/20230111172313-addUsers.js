@@ -5,8 +5,8 @@ const fs = require('fs');
 module.exports = {
   up (queryInterface, Sequelize) {
     let usersData = JSON.parse(fs.readFileSync('./data/user.json', 'utf-8')).map(el => {
-      el.createdDate = new Date();
-      el.updateAt = new Date();
+      el.createdAt = new Date();
+      el.updatedAt = new Date();
       return el;
     });
 

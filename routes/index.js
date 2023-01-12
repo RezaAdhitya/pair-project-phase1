@@ -10,7 +10,6 @@ router.get('/', (req, res) => {
 })
 
 // landing page
-router.use('/', router)
 
 // product
 router.use('/products', productRouter)
@@ -31,7 +30,5 @@ router.post('/login')
 // register
 router.get('/register')
 router.post('/register')
-
-
 
 module.exports = router

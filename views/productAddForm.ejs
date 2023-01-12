@@ -29,9 +29,16 @@
                 <input type="number" name="stock" id="stock" class="form-control">
             </div>
             <div class="mb-3">
+                <label for="imageUrl" class="form-label">Image URL</label>
+                <input type="text" name="imageUrl" id="imageUrl" class="form-control">
+            </div>
+            <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
-                <select name="category" id="category">
-                    <option value=":id">category name</option>
+                <select class="form-select" name="CategoryId" id="category">
+                    <option value="" selected disabled>-- Please Select --</option>
+                    <% categoryData.forEach(el => { %>
+                        <option value="<%= el.id %>"><%= el.name %></option>
+                    <% }) %> 
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
