@@ -24,3 +24,4 @@ Multer
 |No| Changes | Notes |
 |--|---------|-------|
 |1| Setting up back-end #1 | <ul><li>create db</li><li>migrating tables</li><li>setting relationship</li><li>migrating tables</li><li>seeding</li></ul> |
+|2| View templates #2 | <ul><li>View templates</li><li>Edit addNewColumnIsPaidInCart -> change data type from integer to boolean</li><li>User data and seeding (for base admin account)</li></ul> |
