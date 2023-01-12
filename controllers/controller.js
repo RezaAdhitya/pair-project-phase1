@@ -10,9 +10,10 @@ class Controller {
   }
 
   static directToLoginPage(req, res){
+    let {errors} = req.query
     let sessionId = req.session.userId
     let sessionRole = req.session.userRole
-    res.render("login", {sessionId, sessionRole})
+    res.render("login", {sessionId, sessionRole, errors})
   }
 
   static login(req, res){
@@ -26,15 +27,15 @@ class Controller {
         if(isValidPass) {
           req.session.userId = user.id
           req.session.userRole = user.role
-          console.log(req.session)
+
           res.redirect('/products')
         } else {
           let error = 'Invalid email/password'
-          res.redirect(`/login?error=${error}`)
+          res.redirect(`/login?errors=${error}`)
         }
       } else {
         let error = 'Invalid email/password'
-        res.redirect(`/login?error=${error}`)
+        res.redirect(`/login?errors=${error}`)
       }
     })
   }
@@ -46,10 +47,13 @@ class Controller {
   }
 
   static directToRegister(req, res){
-    res.render("register")
+    let { errors } = req.query
+    res.render("register", {errors})
   }
 
   static register(req, res){
+
+    console.log(req.body)
     User.create({
       username: req.body.username,
       email: req.body.email,
@@ -63,10 +67,16 @@ class Controller {
         gender: req.body.gender,
         address: req.body.address
       })
-    }).then((result2) => {
-      res.redirect('/')
+    }).then(() => {
+      res.redirect('/login')
     }).catch((err) => {
-      res.render("error", {err})
+      if (err.name === 'SequelizeValidationError') {
+        let errors = err.errors.map(el => el.message)
+        res.redirect(`/register?errors=${errors}`)
+      } else {
+        
+        res.render("error", {err})
+      }
     })
   }
 
@@ -214,7 +224,6 @@ class Controller {
         id: cartId
       }
     }).then((cartResult) => {
-      console.log(cartResult);
 
       return Product.decrement('stock', {
         where: {
@@ -456,27 +465,26 @@ class Controller {
     Cart.findOne({
       where: {
         UserId: sessionId,
-        ProductId: productId
+        ProductId: productId,
+        isPaid: false
       }
     })
     .then((cartData) => {
-      if (cartData) {
+      if (cartData && cartData.isPaid === false) {
+        console.log(cartData)
         res.redirect(`/carts/${cartData.id}/add`)
       } else {
         return Cart.create({
           UserId: sessionId,
           ProductId: productId
         })
+        .then(() => {
+          res.redirect(`/products/${productId}`)
+        }).catch((err) => {
+          res.send(err)
+        });
       }
     })
-    .then(() => {
-      res.redirect(`/products/${productId}`)
-    }).catch((err) => {
-      console.log(err)
-      // for some reasons this res.send cannot be activated for this function to 'function', so
-      // it will remain commented temporarily and the error will only be console logged
-      // res.send(err)
-    });
   }
 }
 
