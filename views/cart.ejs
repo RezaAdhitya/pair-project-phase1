@@ -25,8 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% cart.forEach((el, index) => { 
-                    if(el.isPaid){ %>
+                <% cart.forEach((el, index) => { %>
                 <tr>
                     <td><%= ++index %></td>
                     <td><%= el.transactionCode %></td>
@@ -36,13 +35,13 @@
                     <td><%= el.amount %></td>
                     <td><%= convertRp(el.getTotalPayment(el.Product.price)) %></td>
                     <td>
-                        <a href="/carts/<%= el.UserId %>/add" class="btn btn-outline-success">+</a>
-                        <a href="/carts/<%= el.UserId %>/sub" class="btn btn-outline-warning">-</a>
-                        <a href="/carts/<%= el.UserId %>/confirm" class="btn btn-outline-primary">Pay</a>
-                        <a href="/carts/<%= el.UserId %>/delete" class="btn btn-outline-danger">Delete</a>
+                        <a href="/carts/<%= el.id %>/add" class="btn btn-outline-success">+</a>
+                        <a href="/carts/<%= el.id %>/sub" class="btn btn-outline-warning">-</a>
+                        <a href="/carts/<%= el.id %>/confirm" class="btn btn-outline-primary">Pay</a>
+                        <a href="/carts/<%= el.id %>/delete" class="btn btn-outline-danger">Delete</a>
                     </td>
                 </tr>
-                <% }}) %>
+                <% }) %>
             </tbody>
         </table>
     </div>
