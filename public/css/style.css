@@ -43,5 +43,10 @@ a + a {
   height: 30vh;
 }
 
-.custom-3 > h3 {
+.custom-alert {
+  width: 30%;
+  margin: auto;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  height: 1rem;
 }

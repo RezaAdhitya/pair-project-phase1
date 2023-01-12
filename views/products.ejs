@@ -32,7 +32,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><%= el.name %></h5>
                             <p class="card-text"><%= el.description %></p>
-                            <p class="card-text">Harga: <%= el.price %></p>
+                            <p class="card-text">Harga: <%= convertRp(el.price) %></p>
                             <p class="card-text">Stock: <%= el.stock %></p>
                             <p class="card-text">Kategori: <%= el.Category.name %></p>
                             <p class="card-text">Penjual: <%= el.User.username %></p>
