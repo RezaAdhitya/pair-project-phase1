@@ -11,30 +11,36 @@
     <%- include('navbar') %>
     <div class="container mt-4">
         <h1 class="text-center">Edit Product</h1>
-        <form action="/products/edit/:id" method="post">
+        <form action="/products/<%= productData.id %>/edit" method="post">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" name="name" id="name" class="form-control">
+                <input type="text" name="name" id="name" class="form-control" value="<%= productData.name %>">
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <input type="text" name="description" id="description" class="form-control">
+                <input type="text" name="description" id="description" class="form-control" value="<%= productData.description %>">
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
-                <input type="number" name="price" id="price" class="form-control">
+                <input type="number" name="price" id="price" class="form-control" value="<%= productData.price %>">
             </div>
             <div class="mb-3">
                 <label for="stock" class="form-label">Stock</label>
-                <input type="number" name="stock" id="stock" class="form-control">
+                <input type="number" name="stock" id="stock" class="form-control" value="<%= productData.stock %>">
+            </div>
+            <div class="mb-3">
+                <label for="imageUrl" class="form-label">Image URL</label>
+                <input type="text" name="imageUrl" id="imageUrl" class="form-control" value="<%= productData.imageUrl %>">
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
-                <select name="category" id="category">
-                    <option value=":id">category name</option>
+                <select class="form-select" name="CategoryId" id="category">
+                    <% categoryData.forEach(el => { %>
+                        <option value="<%= el.id %>" <%= productData.CategoryId === el.id ? "selected" : "" %>><%= el.name %></option>
+                    <% }) %> 
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary">Edit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
