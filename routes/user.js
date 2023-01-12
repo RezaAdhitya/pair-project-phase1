@@ -1,11 +1,12 @@
 const express = require('express');
+const Controller = require('../controllers/controller');
 const router = express.Router();
 
 // users list
-router.get('/');
+router.get('/', Controller.listUsers);
 
 // user profile
-router.get('/:id');
+router.get('/:id', Controller.showProfile);
 
 // edit profile
 router.get('/:id/edit');

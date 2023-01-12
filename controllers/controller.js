@@ -66,7 +66,7 @@ class Controller {
     })
   }
 
-  listUsers(req, res){
+  static listUsers(req, res){
     User.findAll().then((usersData) => {
       res.render("users", {usersData})
     }).catch((err) => {
@@ -74,7 +74,7 @@ class Controller {
     })
   }
 
-  showCart(req, res){
+  static showCart(req, res){
     let userId = req.params.userId
     let option = {
       include: [User, Product],
@@ -93,7 +93,7 @@ class Controller {
   }
 
 
-  showProfile(req, res){
+  static showProfile(req, res){
     let userId = req.params.id;
 
     Profile.findOne({
@@ -109,7 +109,6 @@ class Controller {
   }
 
   static addProductForm(req, res) {
-    
     Category.findAll()
     .then((categoryData) => {
       res.render("productAddForm", {categoryData})
@@ -119,7 +118,8 @@ class Controller {
   }
 
   static addProduct(req, res) {
-    let {name, description, price, stock, imageUrl, CategoryId} = req.body
+    let {name, description, price, stock, CategoryId} = req.body;
+    let imageUrl = `\\uploads\\${req.file.filename}`;
 
     Product.create({
       name,
@@ -131,7 +131,7 @@ class Controller {
       UserId: '1'
     })
     .then(() => {
-      res.redirect('/')
+      res.redirect(`/categories/${CategoryId}/products`)
     }).catch((err) => {
       res.send(err)
     });
@@ -165,23 +165,25 @@ class Controller {
   }
 
   static productEdit(req, res) {
-    let {name, description, price, stock, imageUrl, CategoryId} = req.body
+    let {name, description, price, stock, CategoryId} = req.body
     let id = req.params.productId
+    console.log(req.file);
+    // let imageUrl = `\\uploads\\${req.file.filename}`
 
-    Product.update({
-      name,
-      description,
-      price,
-      stock,
-      imageUrl,
-      CategoryId,
-      UserId: '1'
-    },{where: {id}})
-    .then(() => {
-      res.redirect(`/categories/${CategoryId}/products`)
-    }).catch((err) => {
-      res.send(err)
-    });
+    // Product.update({
+    //   name,
+    //   description,
+    //   price,
+    //   stock,
+    //   imageUrl,
+    //   CategoryId,
+    //   UserId: '1'
+    // },{where: {id}})
+    // .then(() => {
+    //   res.redirect(`/categories/${CategoryId}/products`)
+    // }).catch((err) => {
+    //   res.send(err)
+    // });
   }
 }
 

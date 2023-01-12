@@ -11,7 +11,7 @@
     <%- include('navbar') %>
     <div class="container mt-4">
         <h1 class="text-center">Add Product</h1>
-        <form action="/products/add" method="post">
+        <form action="/products/add" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" name="name" id="name" class="form-control">
@@ -30,7 +30,7 @@
             </div>
             <div class="mb-3">
                 <label for="imageUrl" class="form-label">Image URL</label>
-                <input type="text" name="imageUrl" id="imageUrl" class="form-control">
+                <input type="file" name="imageUrl" id="imageUrl" class="form-control">
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
