@@ -26,7 +26,7 @@
             </thead>
             <tbody>
                 <% cart.forEach((el, index) => { 
-                    if(el.isPaid || el.User.role === 'Admin'){ %>
+                    if(!el.isPaid || el.User.role === 'Admin'){ %>
                 <tr>
                     <td><%= ++index %></td>
                     <td><%= el.transactionCode %></td>
@@ -47,7 +47,7 @@
                     
                     </td>
                 </tr>
-                <% }) %>
+                <% }}) %>
             </tbody>
         </table>
     </div>

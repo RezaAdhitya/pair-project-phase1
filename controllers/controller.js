@@ -11,7 +11,8 @@ class Controller {
 
   static directToLoginPage(req, res){
     let sessionId = req.session.userId
-    res.render("login", {sessionId})
+    let sessionRole = req.session.userRole
+    res.render("login", {sessionId, sessionRole})
   }
 
   static login(req, res){
@@ -65,8 +66,10 @@ class Controller {
 
   static listCategory(req, res) {
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
+    
     Category.findAll().then((categories) => {
-      res.render("categories", {categories, sessionId})
+      res.render("categories", {categories, sessionId, sessionRole})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -74,6 +77,7 @@ class Controller {
   
   static listProductPerCategory(req, res) {
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     let categoryId = req.params.categoryId
     let categoryData = null
     
@@ -86,7 +90,7 @@ class Controller {
       })
     })
     .then((productData) => {
-      res.render("products", {categoryData, productData, convertRp, sessionId})
+      res.render("products", {categoryData, productData, convertRp, sessionId, sessionRole})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -94,12 +98,23 @@ class Controller {
   
   static listAllProducts(req, res) {
     let sessionId = req.session.userId
-    Product.findAll({
-      include: Category
-    })
+    let sessionRole = req.session.userRole
+    let searchQuery = req.query.search
+    let option = {
+      include: Category,
+      where: {}
+    }
+
+    if(searchQuery){
+      option.where.name = {
+        [Op.iLike]: `%${searchQuery}%`
+      }
+    }
+    // console.log(req.query);
+    Product.findAll(option)
     .then((productData) => {
       console.log(sessionId)
-      res.render("productsAll", {productData, convertRp, sessionId});
+      res.render("productsAll", {productData, convertRp, sessionId, sessionRole});
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -107,8 +122,9 @@ class Controller {
 
   static listUsers(req, res){
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     User.findAll().then((usersData) => {
-      res.render("users", {usersData, sessionId})
+      res.render("users", {usersData, sessionId, sessionRole})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -116,7 +132,9 @@ class Controller {
 
   static showCart(req, res){
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     // let userId = req.params.userId
+    // console.log(sessionId);
     let option = {
       include: [User, Product],
       where: {},
@@ -127,11 +145,11 @@ class Controller {
       option.where.UserId = sessionId
     }
 
-    console.log(option)
+    // console.log(option)
 
     Cart.findAll(option)
     .then((cart) => {
-      res.render("cart", {cart, convertRp, sessionId})
+      res.render("cart", {cart, convertRp, sessionId, sessionRole})
     }).catch((err) =>{
       res.render("error", {err})
     })
@@ -141,11 +159,23 @@ class Controller {
     let sessionId = req.session.userId
     let productId = req.params.productId;
 
-    Cart.increment('amount', {
+    Cart.findOne({
       where: {
         id: productId
       },
-      by: 1
+      include: Product
+    }).then((cartData) => {
+      let productStock = cartData.Product.stock
+
+      return Cart.increment('amount', {
+        where: {
+          id: productId,
+          amount: {
+            [Op.lt]: productStock
+          }
+        },
+        by: 1
+      })
     }).then(() => {
       res.redirect(`/carts/${sessionId}`)
     }).catch((err) => {
@@ -223,6 +253,7 @@ class Controller {
 
   static showProfile(req, res){
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     let userId = req.params.id;
 
     Profile.findOne({
@@ -233,7 +264,7 @@ class Controller {
     }).then((profile) => {
       let birthDate = Profile.convertDate(profile.dateOfBirth)
       
-      res.render("userProfile", {profile, birthDate, sessionId})
+      res.render("userProfile", {profile, birthDate, sessionId, sessionRole})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -241,6 +272,7 @@ class Controller {
 
   static editProfileForm(req, res){
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     let userId = req.params.id;
 
     Profile.findOne({
@@ -251,7 +283,7 @@ class Controller {
     }).then((profile) => {
       let birthDate = Profile.convertDate(profile.dateOfBirth);
 
-      res.render("profileEditForm", {profile, birthDate, sessionId})
+      res.render("profileEditForm", {profile, birthDate, sessionId, sessionRole})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -307,10 +339,11 @@ class Controller {
 
   static addProductForm(req, res) {
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     let {errors} = req.query
     Category.findAll()
     .then((categoryData) => {
-      res.render("productAddForm", {categoryData, errors, sessionId})
+      res.render("productAddForm", {categoryData, errors, sessionId, sessionRole})
     }).catch((err) => {
       res.send(err)
     });
@@ -355,6 +388,7 @@ class Controller {
 
   static productEditForm(req, res) {
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     let id = req.params.productId
     let categoryData = null
 
@@ -363,7 +397,7 @@ class Controller {
       categoryData = catData
       return Product.findByPk(id)
     }).then((productData) => {
-      res.render('productEditForm', {categoryData, productData, sessionId})
+      res.render('productEditForm', {categoryData, productData, sessionId, sessionRole})
     })
     .catch((err) => {
       res.send(err)
@@ -394,6 +428,7 @@ class Controller {
 
   static productDetail(req, res) {
     let sessionId = req.session.userId
+    let sessionRole = req.session.userRole
     let id = req.params.productId
     console.log(id)
     
@@ -403,7 +438,7 @@ class Controller {
     })
     .then((productData) => {
       // console.log(productData)
-      res.render("productDetail", {productData, convertRp, sessionId})
+      res.render("productDetail", {productData, convertRp, sessionId, sessionRole})
     }).catch((err) => {
       res.send(err)
     });
