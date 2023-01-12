@@ -20,7 +20,7 @@ router.get('/:productId/sub', Controller.subtractAmount);
 router.get('/:userId/confirm', isCustomer, Controller.confirmPay);
 
 // delete cart data
-router.get('/:productId/delete', isCustomer, Controller.deleteCart);
+router.get('/:cartId/delete', isCustomer, Controller.deleteCart);
 
 
 module.exports = router;

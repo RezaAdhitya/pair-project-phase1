@@ -19,6 +19,9 @@ router.post('/register', Controller.register)
 router.get('/login', Controller.directToLoginPage)
 router.post('/login', Controller.login)
 
+// logout
+router.get('/logout', Controller.logout)
+
 // categories
 router.use('/categories', categoryRoute)
 

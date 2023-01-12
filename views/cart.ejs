@@ -26,8 +26,8 @@
             </thead>
             <tbody>
             
-                <% cart.forEach((el, index) => { 
-                    if(!el.isPaid || el.User.role === 'Admin'){ %>
+                <% cart.forEach((el, index) => { %>
+                   <% if(!el.isPaid || el.User.role === 'Admin'){ %>
                     
                 <tr>
                     <td><%= ++index %></td>
@@ -49,6 +49,7 @@
                             <a href="/carts/<%= el.id %>/delete" class="btn btn-outline-danger">Delete</a>
                     </td>
                 </tr>
+                    <% } %>
                 <% }) %>
             </tbody>
         </table>
