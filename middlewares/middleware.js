@@ -40,6 +40,7 @@ let isAdmin = (req, res, next) => {
 
 let isCheckingAdminProfile = (req, res, next) => {
   if(req.params.id === 1 && req.session.userRole === 'Admin') {
+    // console.log(req.session.userRole);
     next()
   } else {
     res.redirect('/products')

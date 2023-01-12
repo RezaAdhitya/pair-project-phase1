@@ -7,7 +7,7 @@ const { isLoggedIn, isCustomer, isSeller, isAdmin, isCheckingAdminProfile } = re
 router.get('/', isAdmin, Controller.listUsers);
 
 // user profile
-router.get('/:id', isCheckingAdminProfile, Controller.showProfile);
+router.get('/:id', Controller.showProfile);
 
 // edit profile
 router.get('/:id/edit', Controller.editProfileForm);
