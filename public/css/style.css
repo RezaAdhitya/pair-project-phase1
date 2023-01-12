@@ -106,3 +106,7 @@ a + a {
 .kategori-small {
   font-size: 0.8rem;
 }
+
+.disable {
+  display: none;
+}
