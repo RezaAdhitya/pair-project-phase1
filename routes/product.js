@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const Controller = require('../controllers/controller');
 const router = express.Router();
+const { isLoggedIn, isCustomer, isSeller, isAdmin } = require('../middlewares/middleware');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './public/uploads')
@@ -14,10 +15,10 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage});
 
 // product list
-router.get('/');
+router.get('/', Controller.listAllProducts);
 
 // add product
-router.get('/add', Controller.addProductForm);
+router.get('/add', isSeller, Controller.addProductForm);
 router.post('/add', upload.single('imageUrl'), (req, res) => {
     Controller.addProduct(req, res);
 });
@@ -26,10 +27,10 @@ router.post('/add', upload.single('imageUrl'), (req, res) => {
 router.get('/:productId', Controller.productDetail)
 
 // delete product
-router.get('/:productId/delete', Controller.deleteProduct);
+router.get('/:productId/delete', isSeller, Controller.deleteProduct);
 
 // edit product
-router.get('/:productId/edit', Controller.productEditForm);
+router.get('/:productId/edit', isSeller, Controller.productEditForm);
 
 router.post('/:productId/edit', upload.single('imageUrlEdit'), (req, res) => {
     Controller.productEdit(req, res);

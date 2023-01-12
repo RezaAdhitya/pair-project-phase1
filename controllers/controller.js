@@ -2,6 +2,7 @@ const { Op } = require('sequelize')
 const { User, Profile, Category, Product, Cart} = require('../models/index')
 const { convertRp } = require('../helpers/helper');
 const bcrypt = require('bcryptjs');
+const {  isLoggedIn, isCustomer, isSeller, isAdmin } = require('../middlewares/middleware');
 
 class Controller {
   static directToHome(req, res){
@@ -9,7 +10,8 @@ class Controller {
   }
 
   static directToLoginPage(req, res){
-    res.render("login")
+    let sessionId = req.session.userId
+    res.render("login", {sessionId})
   }
 
   static login(req, res){
@@ -20,9 +22,11 @@ class Controller {
     .then(user => {
       if(user){
         let isValidPass = bcrypt.compareSync(password, user.password) // boolean
-        console.log(isValidPass)
         if(isValidPass) {
-          res.redirect('/')
+          req.session.userId = user.id
+          req.session.userRole = user.role
+          console.log(req.session)
+          res.redirect('/products')
         } else {
           let error = 'Invalid email/password'
           res.redirect(`/login?error=${error}`)
@@ -39,7 +43,6 @@ class Controller {
   }
 
   static register(req, res){
-    console.log(req.body);
     User.create({
       username: req.body.username,
       email: req.body.email,
@@ -61,14 +64,16 @@ class Controller {
   }
 
   static listCategory(req, res) {
+    let sessionId = req.session.userId
     Category.findAll().then((categories) => {
-      res.render("categories", {categories})
+      res.render("categories", {categories, sessionId})
     }).catch((err) => {
       res.render("error", {err})
     })
   }
   
   static listProductPerCategory(req, res) {
+    let sessionId = req.session.userId
     let categoryId = req.params.categoryId
     let categoryData = null
     
@@ -81,74 +86,87 @@ class Controller {
       })
     })
     .then((productData) => {
-      res.render("products", {categoryData, productData, convertRp})
+      res.render("products", {categoryData, productData, convertRp, sessionId})
     }).catch((err) => {
       res.render("error", {err})
     })
   }
   
-  static listAllProduct(req, res) {
-    Product.findAll().then((productsData) => {
-      res.render("products", {productsData, convertRp});
+  static listAllProducts(req, res) {
+    let sessionId = req.session.userId
+    Product.findAll({
+      include: Category
+    })
+    .then((productData) => {
+      console.log(sessionId)
+      res.render("productsAll", {productData, convertRp, sessionId});
     }).catch((err) => {
       res.render("error", {err})
     })
   }
 
   static listUsers(req, res){
+    let sessionId = req.session.userId
     User.findAll().then((usersData) => {
-      res.render("users", {usersData})
+      res.render("users", {usersData, sessionId})
     }).catch((err) => {
       res.render("error", {err})
     })
   }
 
   static showCart(req, res){
-    let userId = req.params.userId
+    let sessionId = req.session.userId
+    // let userId = req.params.userId
     let option = {
       include: [User, Product],
-      where: {}
+      where: {},
+      order: [['id','ASC']]
     }
 
-    if(userId){
-      option.where.UserId = userId
+    if(sessionId){
+      option.where.UserId = sessionId
     }
 
-    Cart.findAll(option).then((cart) => {
-      res.render("cart", {cart, convertRp})
+    console.log(option)
+
+    Cart.findAll(option)
+    .then((cart) => {
+      res.render("cart", {cart, convertRp, sessionId})
     }).catch((err) =>{
       res.render("error", {err})
     })
   }
 
   static addAmount(req, res){
-    let cartId = req.params.cartId;
+    let sessionId = req.session.userId
+    let productId = req.params.productId;
 
     Cart.increment('amount', {
       where: {
-        id: cartId
+        id: productId
       },
       by: 1
-    }).then((result) => {
-      res.redirect('/carts')
+    }).then(() => {
+      res.redirect(`/carts/${sessionId}`)
     }).catch((err) => {
       res.render("error", {err})
     })
   }
 
   static subtractAmount(req, res){
-    let cartId = req.params.cartId;
+    let sessionId = req.session.userId
+    let productId = req.params.productId;
 
     Cart.decrement('amount', {
       where: {
-        id: cartId,
+        id: productId,
         amount: {
           [Op.ne]: 0
         }
       },
       by: 1
-    }).then((result) => {
-      res.redirect('/carts')
+    }).then(() => {
+      res.redirect(`/carts/${sessionId}`)
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -204,34 +222,36 @@ class Controller {
   }
 
   static showProfile(req, res){
+    let sessionId = req.session.userId
     let userId = req.params.id;
 
     Profile.findOne({
+      include: User,
       where: {
         UserId: userId
-      },
-      include: User
+      }
     }).then((profile) => {
       let birthDate = Profile.convertDate(profile.dateOfBirth)
       
-      res.render("userProfile", {profile, birthDate})
+      res.render("userProfile", {profile, birthDate, sessionId})
     }).catch((err) => {
       res.render("error", {err})
     })
   }
 
   static editProfileForm(req, res){
+    let sessionId = req.session.userId
     let userId = req.params.id;
 
     Profile.findOne({
       where: {
-        UserId: userId
+        UserId: sessionId
       },
       include: User
     }).then((profile) => {
       let birthDate = Profile.convertDate(profile.dateOfBirth);
 
-      res.render("profileEditForm", {profile, birthDate})
+      res.render("profileEditForm", {profile, birthDate, sessionId})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -286,16 +306,18 @@ class Controller {
   }
 
   static addProductForm(req, res) {
+    let sessionId = req.session.userId
     let {errors} = req.query
     Category.findAll()
     .then((categoryData) => {
-      res.render("productAddForm", {categoryData, errors})
+      res.render("productAddForm", {categoryData, errors, sessionId})
     }).catch((err) => {
       res.send(err)
     });
   }
 
   static addProduct(req, res) {
+    let sessionId = req.session.userId
     let {name, description, price, stock, CategoryId} = req.body;
     let imageUrl = `\\uploads\\${req.file.filename}`;
 
@@ -306,7 +328,7 @@ class Controller {
       stock,
       imageUrl,
       CategoryId,
-      UserId: '1'
+      UserId: sessionId
     })
     .then(() => {
       res.redirect(`/categories/${CategoryId}/products`)
@@ -332,6 +354,7 @@ class Controller {
   }
 
   static productEditForm(req, res) {
+    let sessionId = req.session.userId
     let id = req.params.productId
     let categoryData = null
 
@@ -340,7 +363,7 @@ class Controller {
       categoryData = catData
       return Product.findByPk(id)
     }).then((productData) => {
-      res.render('productEditForm', {categoryData, productData})
+      res.render('productEditForm', {categoryData, productData, sessionId})
     })
     .catch((err) => {
       res.send(err)
@@ -348,6 +371,7 @@ class Controller {
   }
 
   static productEdit(req, res) {
+    let sessionId = req.session.userId
     let {name, description, price, stock, CategoryId} = req.body
     let id = req.params.productId
     let imageUrl = `\\uploads\\${req.file.filename}`
@@ -359,7 +383,7 @@ class Controller {
       stock,
       imageUrl,
       CategoryId,
-      UserId: '1'
+      UserId: sessionId
     },{where: {id}})
     .then(() => {
       res.redirect(`/categories/${CategoryId}/products`)
@@ -369,6 +393,7 @@ class Controller {
   }
 
   static productDetail(req, res) {
+    let sessionId = req.session.userId
     let id = req.params.productId
     console.log(id)
     
@@ -378,17 +403,19 @@ class Controller {
     })
     .then((productData) => {
       // console.log(productData)
-      res.render("productDetail", {productData, convertRp})
+      res.render("productDetail", {productData, convertRp, sessionId})
     }).catch((err) => {
       res.send(err)
     });
   }
 
   static addToCart(req, res) {
+    console.log('MASUUUUUK')
+    let sessionId = req.session.userId
     let productId = req.params.productId
 
     Cart.create({
-      UserId: '1',
+      UserId: sessionId,
       ProductId: productId
     })
     .then(() => {

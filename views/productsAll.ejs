@@ -14,10 +14,10 @@
     
 
     <div class="container mt-4">
-        <h1 class="text-center">Produk <%= categoryData.name %></h1>
+        <h1 class="text-center">All Produk</h1>
         <% if (!productData.length) { %>
             <div class="container d-flex justify-content-center align-items-center custom-3 flex-column">
-                <h3 class="text-center">No product yet in this category!</h3>
+                <h3 class="text-center">No product yet</h3>
                 <h4 class="text-center">Click <a href="/products/add" class="btn btn-success">here</a> to add new product</h4>
             </div>
         <% } else { %>
@@ -42,13 +42,8 @@
                                   <a class="btn btn-danger">Out of Stock!</a>
                                 <% } %>
                               </div>
-                              <div class="container d-flex justify-content-between mt-3">
+                              <div class="container d-flex justify-content-center mt-3">
                                   <a href="/products/<%= el.id %>" class="btn btn-primary">View Details</a>
-                                  <% if (el.stock > 0) { %>
-                                  <a href="/carts/<%= sessionId %>/add" class="btn btn-success">Add to cart</a>
-                                  <% } else { %>
-                                    <a href="/carts/<%= sessionId %>/add" class="btn btn-success" disabled>Add to cart</a>
-                                  <% } %>
                               </div>
                         </div>
                     </div>
