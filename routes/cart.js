@@ -1,11 +1,12 @@
 const express = require('express');
+const Controller = require('../controllers/controller');
 const router = express.Router();
 
 // cart masterlist
-router.get('/');
+router.get('/', Controller.showCart);
 
 // user's cart
-router.get('/:userId');
+router.get('/:userId', Controller.showCart);
 
 // manipulate buying amount
 router.get('/:userId/add');

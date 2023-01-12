@@ -4,10 +4,9 @@ const categoryRoute = require('./category')
 const userRouter = require('./user')
 const productRouter = require('./product')
 const cartRouter = require('./cart')
+const Controller = require('../controllers/controller')
 
-router.get('/', (req, res) => {
-  res.render('index')
-})
+router.get('/', Controller.directToHome)
 
 // landing page
 
@@ -24,11 +23,11 @@ router.use('/users', userRouter)
 router.use('/carts', cartRouter)
 
 // login
-router.get('/login')
-router.post('/login')
+router.get('/login', Controller.directToLoginPage)
+router.post('/login', Controller.login)
 
 // register
-router.get('/register')
-router.post('/register')
+router.get('/register', Controller.directToRegister)
+router.post('/register', Controller.register)
 
 module.exports = router

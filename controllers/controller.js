@@ -120,7 +120,8 @@ class Controller {
   }
 
   static addProduct(req, res) {
-    let {name, description, price, stock, imageUrl, CategoryId} = req.body
+    let {name, description, price, stock, CategoryId} = req.body;
+    let imageUrl = `\\uploads\\${req.file.filename}`;
 
     Product.create({
       name,
@@ -132,7 +133,7 @@ class Controller {
       UserId: '1'
     })
     .then(() => {
-      res.redirect('/')
+      res.redirect(`/categories/${CategoryId}/products`)
     }).catch((err) => {
       if (err.name = "SequelizeValidationError") {
         let errors = err.errors.map(el => el.message)
@@ -171,23 +172,25 @@ class Controller {
   }
 
   static productEdit(req, res) {
-    let {name, description, price, stock, imageUrl, CategoryId} = req.body
+    let {name, description, price, stock, CategoryId} = req.body
     let id = req.params.productId
+    console.log(req.file);
+    // let imageUrl = `\\uploads\\${req.file.filename}`
 
-    Product.update({
-      name,
-      description,
-      price,
-      stock,
-      imageUrl,
-      CategoryId,
-      UserId: '1'
-    },{where: {id}})
-    .then(() => {
-      res.redirect(`/categories/${CategoryId}/products`)
-    }).catch((err) => {
-      res.send(err)
-    });
+    // Product.update({
+    //   name,
+    //   description,
+    //   price,
+    //   stock,
+    //   imageUrl,
+    //   CategoryId,
+    //   UserId: '1'
+    // },{where: {id}})
+    // .then(() => {
+    //   res.redirect(`/categories/${CategoryId}/products`)
+    // }).catch((err) => {
+    //   res.send(err)
+    // });
   }
 
   static productDetail(req, res) {
