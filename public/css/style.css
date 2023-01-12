@@ -1,0 +1,31 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.navbar-collapse li {
+  list-style-type: none;
+  align-self: center;
+}
+
+.custom-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.brand {
+  font-size: 10rem;
+  margin-top: 1rem;
+}
+
+a + a {
+  margin-left: 1rem;
+}
