@@ -14,13 +14,23 @@
         <table class="table mt-3">
             <thead>
                 <tr>
-                    <td>Id</td>
-                    <td>Name</td>
-                    <td>Description</td>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                
+                <% categories.forEach((el, index) => { %>
+                    <tr>
+                        <td><%= ++index %></td>
+                        <td><%= el.name %></td>
+                        <td><%= el.description %></td>
+                        <td>
+                            <a href="/categories/<%= el.id %>/products" class="btn btn-success">See products</a>
+                        </td>
+                    </tr>
+                    <% }) %>
             </tbody>
         </table>
     </div>

@@ -9,24 +9,47 @@
 </head>
 <body>
     <%- include('navbar') %>
+    
+    
+
     <div class="container mt-4">
-        <h1 class="text-center">Product List</h1>
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <td>No</td>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td>Price</td>
-                    <td>Stock</td>
-                    <td>Category</td>
-                    <td>Action</td>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
+        <h1 class="text-center">Produk <%= categoryData.name %></h1>
+        <% if (!productData.length) { %>
+            <h3 class="text-center">No product yet in this category!</h3>
+            <h4 class="text-center">Click <a href="/products/add">here</a> to add new product</h4>
+        <% } else { %>
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% productData.forEach((el, index) => { %>
+
+                        <div class="card" style="width: 18rem;">
+                            <img src="<%= el.imageUrl %> " class="card-img-top" alt="...">
+                            <div class="card-body">
+                              <h5 class="card-title"><%= el.name %></h5>
+                              <p class="card-text"><%= el.description %></p>
+                              <p class="card-text"><%= el.price %></p>
+                              <p class="card-text"><%= el.stock %></p>
+                              <p class="card-text"><%= el.Category.name %></p>
+                              <p class="card-text"><%= el.User.name %></p>
+                              <a href="/cart/:userId/add" class="btn btn-primary">Add to cart</a>
+                            </div>
+                        </div>
+                        
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
