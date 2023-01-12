@@ -22,13 +22,16 @@ router.post('/add', upload.single('imageUrl'), (req, res) => {
     Controller.addProduct(req, res);
 });
 
+// product detail
+router.get('/:productId', Controller.productDetail)
+
 // delete product
 router.get('/:productId/delete', Controller.deleteProduct);
 
 // edit product
 router.get('/:productId/edit', Controller.productEditForm);
+
 router.post('/:productId/edit', upload.single('imageUrlEdit'), (req, res) => {
-    // console.log(req.file);
     Controller.productEdit(req, res);
 });
 

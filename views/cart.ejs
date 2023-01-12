@@ -32,9 +32,9 @@
                     <td><%= el.transactionCode %></td>
                     <td><%= el.User.username %></td>
                     <td><%= el.Product.name %></td>
-                    <td><%= el.Product.price %></td>
+                    <td><%= convertRp(el.Product.price) %></td>
                     <td><%= el.amount %></td>
-                    <td><%= el.getTotalPayment(el.Product.price) %></td>
+                    <td><%= convertRp(el.getTotalPayment(el.Product.price)) %></td>
                     <td>
                         <a href="/carts/<%= el.UserId %>/add" class="btn btn-outline-success">+</a>
                         <a href="/carts/<%= el.UserId %>/sub" class="btn btn-outline-warning">-</a>
