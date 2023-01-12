@@ -8,14 +8,17 @@ router.get('/', Controller.showCart);
 // user's cart
 router.get('/:userId', Controller.showCart);
 
+// add cart
+router.get('/:productId/addToCart', Controller.addToCart)
+
 // manipulate buying amount
-router.get('/:userId/add');
-router.get('/:userId/sub');
+router.get('/:cartId/add');
+router.get('/:cartId/sub');
 
 // confirm payment
-router.get('/:userId/confirm');
+router.get('/:cartId/confirm');
 
 // delete cart data
-router.get('/:userId/delete');
+router.get('/:cartId/delete',);
 
 module.exports = router;

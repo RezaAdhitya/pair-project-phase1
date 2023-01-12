@@ -1,5 +1,6 @@
 const { User, Profile, Category, Product, Cart} = require('../models/index')
 const { convertRp } = require('../helpers/helper');
+const bcrypt = require('bcryptjs');
 
 class Controller {
   static directToHome(req, res){
@@ -11,7 +12,24 @@ class Controller {
   }
 
   static login(req, res){
-
+    let { email, password } = req.body
+  
+    User.findOne({where: {email}})
+    .then(user => {
+      if(user){
+        let isValidPass = bcrypt.compareSync(password, user.password) // boolean
+        console.log(isValidPass)
+        if(isValidPass) {
+          res.redirect('/')
+        } else {
+          let error = 'Invalid email/password'
+          res.redirect(`/login?error=${error}`)
+        }
+      } else {
+        let error = 'Invalid email/password'
+        res.redirect(`/login?error=${error}`)
+      }
+    })
   }
 
   static directToRegister(req, res){
@@ -205,6 +223,21 @@ class Controller {
       // console.log(productData)
       res.render("productDetail", {productData, convertRp})
     }).catch((err) => {
+      res.send(err)
+    });
+  }
+
+  static addToCart(req, res) {
+    let productId = req.params.productId
+
+    Cart.create({
+      UserId: '1',
+      ProductId: productId
+    })
+    .then(() => {
+      res.redirect(`/products/${productId}`)
+    }).catch((err) => {
+      console.log(err)
       res.send(err)
     });
   }

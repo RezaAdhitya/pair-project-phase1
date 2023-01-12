@@ -30,8 +30,7 @@ router.get('/:productId/delete', Controller.deleteProduct);
 
 // edit product
 router.get('/:productId/edit', Controller.productEditForm);
-router.post('/:productId/edit', upload.single('imageUrl'), (req, res) => {
-    console.log(req.body);
+router.post('/:productId/edit', upload.single('imageurl'), (req, res) => {
     // Controller.productEdit(req, res);
 });
 

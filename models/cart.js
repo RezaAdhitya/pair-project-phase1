@@ -31,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
   });
   Cart.addHook('beforeCreate', (cart, option) => {
     let currentTime = new Date().getTime();
-    
+    cart.amount = 1;
+    cart.isPaid = false;
     cart.transactionCode = `${cart.UserId}${cart.ProductId}-${currentTime}`;
   });
   return Cart;
