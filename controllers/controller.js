@@ -39,6 +39,12 @@ class Controller {
     })
   }
 
+  static logout(req, res) {
+    req.session.destroy(() => {
+      res.redirect('/')
+    })
+  }
+
   static directToRegister(req, res){
     res.render("register")
   }
@@ -145,8 +151,6 @@ class Controller {
       option.where.UserId = sessionId
     }
 
-    // console.log(option)
-
     Cart.findAll(option)
     .then((cart) => {
       res.render("cart", {cart, convertRp, sessionId, sessionRole})
@@ -238,6 +242,7 @@ class Controller {
   }
 
   static deleteCart(req, res){
+    let sessionId = req.session.userId
     let cartId = req.params.cartId;
 
     Cart.destroy({
@@ -245,7 +250,7 @@ class Controller {
         id: cartId
       }
     }).then((result) => {
-      res.redirect('/carts')
+      res.redirect(`/carts/${sessionId}`)
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -445,19 +450,32 @@ class Controller {
   }
 
   static addToCart(req, res) {
-    console.log('MASUUUUUK')
     let sessionId = req.session.userId
     let productId = req.params.productId
 
-    Cart.create({
-      UserId: sessionId,
-      ProductId: productId
+    Cart.findOne({
+      where: {
+        UserId: sessionId,
+        ProductId: productId
+      }
+    })
+    .then((cartData) => {
+      if (cartData) {
+        res.redirect(`/carts/${cartData.id}/add`)
+      } else {
+        return Cart.create({
+          UserId: sessionId,
+          ProductId: productId
+        })
+      }
     })
     .then(() => {
       res.redirect(`/products/${productId}`)
     }).catch((err) => {
       console.log(err)
-      res.send(err)
+      // for some reasons this res.send cannot be activated for this function to 'function', so
+      // it will remain commented temporarily and the error will only be console logged
+      // res.send(err)
     });
   }
 }

@@ -18,11 +18,15 @@
         <% if (!productData.length) { %>
             <div class="container d-flex justify-content-center align-items-center custom-3 flex-column">
                 <h3 class="text-center">No product yet in this category!</h3>
+                <% if (typeof sessionId !== 'undefined') { %>
                 <h4 class="text-center">Click <a href="/products/add" class="btn btn-success">here</a> to add new product</h4>
+                <% } %>
             </div>
         <% } else { %>
             <div class="container d-flex justify-content-center mb-3">
+                <% if (typeof sessionId !== 'undefined') { %>
                 <a href="/products/add" class="btn btn-success">Add more product</a>
+                <% } %>
             </div>
             <div class="container d-flex flex-wrap justify-content-between">
                 <% productData.forEach((el, index) => { %>
