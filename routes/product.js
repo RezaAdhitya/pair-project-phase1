@@ -9,6 +9,9 @@ router.get('/');
 router.get('/add', Controller.addProductForm);
 router.post('/add', Controller.addProduct);
 
+// product detail
+router.get('/:productId', Controller.productDetail)
+
 // delete product
 router.get('/:productId/delete', Controller.deleteProduct);
 

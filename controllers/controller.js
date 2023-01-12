@@ -189,6 +189,22 @@ class Controller {
       res.send(err)
     });
   }
+
+  static productDetail(req, res) {
+    let id = req.params.productId
+    console.log(id)
+    
+    Product.findOne({
+      include: [Category, User],
+      where: {id}
+    })
+    .then((productData) => {
+      // console.log(productData)
+      res.render("productDetail", {productData, convertRp})
+    }).catch((err) => {
+      res.send(err)
+    });
+  }
 }
 
 module.exports = Controller
