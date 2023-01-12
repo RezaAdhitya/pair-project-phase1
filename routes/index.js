@@ -1,33 +1,36 @@
 const express = require('express')
 const router = express.Router()
-const categoryRoute = require('./category');
+const categoryRoute = require('./category')
 const userRouter = require('./user')
 const productRouter = require('./product')
-
+const cartRouter = require('./cart')
 
 router.get('/', (req, res) => {
   res.render('index')
 })
 
 // landing page
-app.use('/', router)
+router.use('/', router)
 
 // product
-app.use('/products', productRouter)
+router.use('/products', productRouter)
 
 // categories
 router.use('/categories', categoryRoute)
 
 // users
-app.use('/users', userRouter)
+router.use('/users', userRouter)
+
+// cart
+router.use('/carts', cartRouter)
 
 // login
-app.get('/login')
-app.post('/login')
+router.get('/login')
+router.post('/login')
 
 // register
-app.get('/register')
-app.post('/register')
+router.get('/register')
+router.post('/register')
 
 
 
