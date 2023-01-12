@@ -27,9 +27,9 @@ router.get('/:productId/delete', Controller.deleteProduct);
 
 // edit product
 router.get('/:productId/edit', Controller.productEditForm);
-router.post('/:productId/edit', upload.single('imageUrl'), (req, res) => {
-    console.log(req.body);
-    // Controller.productEdit(req, res);
+router.post('/:productId/edit', upload.single('imageUrlEdit'), (req, res) => {
+    // console.log(req.file);
+    Controller.productEdit(req, res);
 });
 
 module.exports = router;

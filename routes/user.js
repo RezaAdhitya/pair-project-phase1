@@ -9,10 +9,10 @@ router.get('/', Controller.listUsers);
 router.get('/:id', Controller.showProfile);
 
 // edit profile
-router.get('/:id/edit');
-router.post('/:id/edit');
+router.get('/:id/edit', Controller.editProfileForm);
+router.post('/:id/edit', Controller.editProfile);
 
 // delete user
-router.get('/:id/delete');
+router.get('/:id/delete', Controller.deleteUser);
 
 module.exports = router;

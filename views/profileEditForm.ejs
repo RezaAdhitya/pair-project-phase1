@@ -11,48 +11,44 @@
     <%- include('navbar') %>
     <div class="container mt-4">
         <h1 class="text-center">Edit Profile</h1>
-        <form action="/users/:id/edit" method="post">
+        <form action="/users/<%= profile.UserId %>/edit" method="post">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control">
+                <input type="email" name="email" id="email" class="form-control" value="<%= profile.User.email %>">
             </div>
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" name="name" id="name" class="form-control">
+                <input type="text" name="name" id="name" class="form-control" value="<%= profile.name %>">
             </div>
             <div class="mb-3">
                 <label for="username" class="form-label">UserName</label>
-                <input type="text" name="username" id="username" class="form-control">
+                <input type="text" name="username" id="username" class="form-control" value="<%= profile.User.username %>">
             </div>
             <div class="mb-3">
                 <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                <input type="date" name="dateOfBirth" id="dateOfBirth" class="form-control">
+                <input type="date" name="dateOfBirth" id="dateOfBirth" class="form-control" value="<%= birthDate %>">
             </div>
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
-                <input type="text" name="address" id="address" class="form-control">
+                <input type="text" name="address" id="address" class="form-control" value="<%= profile.address %>">
             </div>
             <div class="mb-3">
                 <label for="gender" class="form-label">Gender</label>
                 <select name="gender" id="gender" class="form-control">
                     <option>-- Select Gender --</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                    <option value="Male" <%= profile.gender === 'Male' ? "selected" : "" %>>Male</option>
+                    <option value="Female" <%= profile.gender === 'Female' ? "selected" : "" %>>Female</option>
+                    <option value="Other" <%= profile.gender === 'Other' ? "selected" : "" %>>Other</option>
                 </select>
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label">Role</label>
                 <select name="role" id="role" class="form-control" disabled>
                     <option>-- Select Role --</option>
-                    <option value="Customer">Customer</option>
-                    <option value="Seller">Seller</option>
-                    <option value="Admin">Admin</option>
+                    <option value="Customer" <%= profile.User.role === 'Customer' ? "selected" : "" %> disabled>Customer</option>
+                    <option value="Seller" <%= profile.User.role === 'Seller' ? "selected" : "" %> disabled>Seller</option>
+                    <option value="Admin" <%= profile.User.role === 'Admin' ? "selected" : "" %> disabled>Admin</option>
                 </select>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" name="password" id="password" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">Edit</button>
         </form>

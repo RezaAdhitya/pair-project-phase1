@@ -10,13 +10,20 @@
 <body>
     <%- include('navbar') %>
     <div class="container mt-4">
-        <h2></h2>
-        <h4>Role: </h4>
-        <p>Date of birth: </p>
-        <p>Gender: </p>
-        <p>Address: </p>
-        <p>Email: </p>
-        <a href="/users/:id/edit"></a>
+        <h2><%= profile.name %> - Username: <%= profile.User.username %></h2>
+        <h4>Role: <%= profile.User.role %></h4>
+        <p>Date of birth: <%= birthDate %> </p>
+        <p>Gender: <%= profile.gender %></p>
+        <p>Address: <%= profile.address %></p>
+        <p>Email: <%= profile.User.email %></p>
+        <div>
+            <a href="/users/<%= profile.UserId %>/edit" class="btn btn-primary">Edit</a>
+            <% if(profile.UserId !== 1){ %>
+            <a href="/users/<%= profile.UserId %>/delete" class="btn btn-danger">Delete</a>
+            <% } else { %>
+            <button type="button" class="btn btn-danger" disabled>Delete</button>
+            <% } %>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
