@@ -1,4 +1,5 @@
 const { User, Profile, Category, Product, Cart} = require('../models/index')
+const { convertRp } = require('../helpers/helper');
 
 class Controller {
   static directToHome(req, res){
@@ -52,7 +53,7 @@ class Controller {
       })
     })
     .then((productData) => {
-      res.render("products", {categoryData, productData})
+      res.render("products", {categoryData, productData, convertRp})
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -60,13 +61,13 @@ class Controller {
   
   static listAllProduct(req, res) {
     Product.findAll().then((productsData) => {
-      res.render("products", {productsData});
+      res.render("products", {productsData, convertRp});
     }).catch((err) => {
       res.render("error", {err})
     })
   }
 
-  listUsers(req, res){
+  static listUsers(req, res){
     User.findAll().then((usersData) => {
       res.render("users", {usersData})
     }).catch((err) => {
@@ -74,7 +75,7 @@ class Controller {
     })
   }
 
-  showCart(req, res){
+  static showCart(req, res){
     let userId = req.params.userId
     let option = {
       include: [User, Product],
@@ -86,14 +87,14 @@ class Controller {
     }
 
     Cart.findAll(option).then((cart) => {
-      res.render("cart", {cart})
+      res.render("cart", {cart, convertRp})
     }).catch((err) =>{
       res.render("error", {err})
     })
   }
 
 
-  showProfile(req, res){
+  static showProfile(req, res){
     let userId = req.params.id;
 
     Profile.findOne({
@@ -109,10 +110,10 @@ class Controller {
   }
 
   static addProductForm(req, res) {
-    
+    let {errors} = req.query
     Category.findAll()
     .then((categoryData) => {
-      res.render("productAddForm", {categoryData})
+      res.render("productAddForm", {categoryData, errors})
     }).catch((err) => {
       res.send(err)
     });
@@ -133,7 +134,12 @@ class Controller {
     .then(() => {
       res.redirect('/')
     }).catch((err) => {
-      res.send(err)
+      if (err.name = "SequelizeValidationError") {
+        let errors = err.errors.map(el => el.message)
+        res.redirect(`/products/add?errors=${errors}`)
+      } else {
+        res.send(err)
+      }
     });
   }
 
