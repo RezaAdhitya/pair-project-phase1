@@ -28,10 +28,10 @@
                 <a href="/products/add" class="btn btn-success">Add more product</a>
                 <% } %>
             </div>
-            <div class="container d-flex flex-wrap justify-content-between">
+            <div class="container d-flex flex-wrap justify-content-center">
                 <% productData.forEach((el, index) => { %>
                 
-                    <div class="card mb-4" style="width: 20rem;">
+                    <div class="card mb-4 m-4" style="width: 20rem;">
                         <img src="<%= el.imageUrl %>" class="" alt="...">
                         <div class="card-body">
                             <h5 class="card-title text-center"><%= el.name %></h5>

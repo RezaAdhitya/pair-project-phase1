@@ -23,7 +23,9 @@
         <% if (!productData.length) { %>
             <div class="container d-flex justify-content-center align-items-center custom-3 flex-column">
                 <h3 class="text-center">No product yet</h3>
+                <% if (typeof sessionId !== 'undefined') { %>
                 <h4 class="text-center">Click <a href="/products/add" class="btn btn-success">here</a> to add new product</h4>
+                <% } %>
             </div>
         <% } else { %>
             <div class="container d-flex justify-content-center mb-3">
@@ -31,10 +33,10 @@
                 <a href="/products/add" class="btn btn-success">Add more product</a>
                 <% } %>
             </div>
-            <div class="container d-flex flex-wrap justify-content-between">
+            <div class="container d-flex flex-wrap justify-content-center">
                 <% productData.forEach((el, index) => { %>
                 
-                    <div class="card mb-4" style="width: 20rem;">
+                    <div class="card mb-4 m-4" style="width: 20rem;">
                         <img src="<%= el.imageUrl %>" class="" alt="...">
                         <div class="card-body">
                             <h5 class="card-title text-center"><%= el.name %></h5>

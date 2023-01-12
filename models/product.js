@@ -47,8 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: {msg: 'Stock must be filled'},
-        notEmpty: {msg: 'Stock must be filled'},
-        min: {args: 1, msg: 'Stock minimum 1'}
+        notEmpty: {msg: 'Stock must be filled'}
       }
     },
     CategoryId: {

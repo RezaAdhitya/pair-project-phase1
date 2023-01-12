@@ -10,11 +10,11 @@
 <body>
     <%- include('navbar') %>
     <div class="container mt-4">
-        <h2><%= profile.name %> - Username: <%= profile.User.username %></h2>
+        <h2><%= profile.name ? profile.name : '' %> - Username: <%= profile.User.username %></h2>
         <h4>Role: <%= profile.User.role %></h4>
-        <p>Date of birth: <%= birthDate %> </p>
-        <p>Gender: <%= profile.gender %></p>
-        <p>Address: <%= profile.address %></p>
+        <p>Date of birth: <%= profile.dateOfBirth ? birthDate : '' %> </p>
+        <p>Gender: <%= profile.gender ? profile.gender : ''  %></p>
+        <p>Address: <%= profile.address ? profile.address : '' %></p>
         <p>Email: <%= profile.User.email %></p>
         <div>
             <a href="/users/<%= profile.UserId %>/edit" class="btn btn-primary">Edit</a>

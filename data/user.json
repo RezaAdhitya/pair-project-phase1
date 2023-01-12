@@ -2,7 +2,7 @@
     {
         "username": "Admin",
         "email": "admin@admin.com",
-        "password": "admin",
+        "password": "$2a$10$/NApKqLWfHfy6IKBNybGG.22mVMBBtnIQWAk46tIjDN4RiHKjIgAC",
         "role": "Admin"
     }
 ]
