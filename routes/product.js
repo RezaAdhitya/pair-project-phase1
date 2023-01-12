@@ -22,6 +22,9 @@ router.post('/add', upload.single('imageUrl'), (req, res) => {
     Controller.addProduct(req, res);
 });
 
+// product detail
+router.get('/:productId', Controller.productDetail)
+
 // delete product
 router.get('/:productId/delete', Controller.deleteProduct);
 
