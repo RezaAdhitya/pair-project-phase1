@@ -6,19 +6,20 @@ const router = express.Router();
 router.get('/', Controller.showCart);
 
 // user's cart
-router.get('/:userId', Controller.showCart);
+router.get('/:cartId', Controller.showCart);
 
 // add cart
 router.get('/:productId/addToCart', Controller.addToCart)
 
 // manipulate buying amount
-router.get('/:cartId/add');
-router.get('/:cartId/sub');
+router.get('/:cartId/add', Controller.addAmount);
+router.get('/:cartId/sub', Controller.subtractAmount);
 
 // confirm payment
-router.get('/:cartId/confirm');
+router.get('/:cartId/confirm', Controller.confirmPay);
 
 // delete cart data
-router.get('/:cartId/delete',);
+router.get('/:cartId/delete', Controller.deleteCart);
+
 
 module.exports = router;

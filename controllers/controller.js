@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const { User, Profile, Category, Product, Cart} = require('../models/index')
 const { convertRp } = require('../helpers/helper');
 const bcrypt = require('bcryptjs');
@@ -12,6 +13,7 @@ class Controller {
   }
 
   static login(req, res){
+
     let { email, password } = req.body
   
     User.findOne({where: {email}})
@@ -37,11 +39,19 @@ class Controller {
   }
 
   static register(req, res){
+    console.log(req.body);
     User.create({
-
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password,
+      role: req.body.role
     }).then((result) => {
       return Profile.create({
-
+        UserId: result.id,
+        name: req.body.name,
+        dateOfBirth: req.body.dateOfBirth,
+        gender: req.body.gender,
+        address: req.body.address
       })
     }).then((result2) => {
       res.redirect('/')
@@ -111,6 +121,68 @@ class Controller {
     })
   }
 
+  static addAmount(req, res){
+    let cartId = req.params.cartId;
+
+    Cart.increment('amount', {
+      where: {
+        id: cartId
+      },
+      by: 1
+    }).then((result) => {
+      res.redirect('/carts')
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
+
+  static subtractAmount(req, res){
+    let cartId = req.params.cartId;
+
+    Cart.decrement('amount', {
+      where: {
+        id: cartId,
+        amount: {
+          [Op.ne]: 0
+        }
+      },
+      by: 1
+    }).then((result) => {
+      res.redirect('/carts')
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
+
+  static confirmPay(req, res){
+    let cartId = req.params.cartId;
+
+    Cart.update({
+      isPaid: true
+    }, {
+      where: {
+        id: cartId
+      }
+    }).then((result) => {
+      res.redirect('/carts')
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
+
+  static deleteCart(req, res){
+    let cartId = req.params.cartId;
+
+    Cart.destroy({
+      where: {
+        id: cartId
+      }
+    }).then((result) => {
+      res.redirect('/carts')
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
 
   static showProfile(req, res){
     let userId = req.params.id;
@@ -121,7 +193,74 @@ class Controller {
       },
       include: User
     }).then((profile) => {
-      res.render("profile", {profile})
+      let birthDate = Profile.convertDate(profile.dateOfBirth)
+      
+      res.render("userProfile", {profile, birthDate})
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
+
+  static editProfileForm(req, res){
+    let userId = req.params.id;
+
+    Profile.findOne({
+      where: {
+        UserId: userId
+      },
+      include: User
+    }).then((profile) => {
+      let birthDate = Profile.convertDate(profile.dateOfBirth);
+
+      res.render("profileEditForm", {profile, birthDate})
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
+
+  static editProfile(req, res){
+    let userId = req.params.id;
+
+    User.update({
+      username: req.body.username,
+      email: req.body.email
+    }, {
+      where: {
+        id: userId
+      }
+    }).then((result) => {
+      return Profile.update({
+        name: req.body.name,
+        dateOfBirth: req.body.dateOfBirth,
+        address: req.body.address,
+        gender: req.body.gender
+      }, {
+        where: {
+          UserId: userId
+        }
+      })
+    }).then((result2) => {
+      res.redirect(`/users/${userId}`)
+    }).catch((err) => {
+      res.render("error", {err})
+    })
+  }
+
+  static deleteUser(req, res){
+    let userId = req.params.id;
+
+    Profile.destroy({
+      where: {
+        UserId: userId
+      }
+    }).then((result) => {
+      return User.destroy({
+        where: {
+          id: userId
+        }
+      })
+    }).then((result2) => {
+      res.redirect('/users')
     }).catch((err) => {
       res.render("error", {err})
     })
@@ -192,23 +331,22 @@ class Controller {
   static productEdit(req, res) {
     let {name, description, price, stock, CategoryId} = req.body
     let id = req.params.productId
-    console.log(req.file);
-    // let imageUrl = `\\uploads\\${req.file.filename}`
+    let imageUrl = `\\uploads\\${req.file.filename}`
 
-    // Product.update({
-    //   name,
-    //   description,
-    //   price,
-    //   stock,
-    //   imageUrl,
-    //   CategoryId,
-    //   UserId: '1'
-    // },{where: {id}})
-    // .then(() => {
-    //   res.redirect(`/categories/${CategoryId}/products`)
-    // }).catch((err) => {
-    //   res.send(err)
-    // });
+    Product.update({
+      name,
+      description,
+      price,
+      stock,
+      imageUrl,
+      CategoryId,
+      UserId: '1'
+    },{where: {id}})
+    .then(() => {
+      res.redirect(`/categories/${CategoryId}/products`)
+    }).catch((err) => {
+      res.send(err)
+    });
   }
 
   static productDetail(req, res) {
