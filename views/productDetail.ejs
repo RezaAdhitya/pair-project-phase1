@@ -48,8 +48,8 @@
                           <a class="btn btn-danger">Out of Stock!</a>
                         <% } %>
                       </div>
-                      <div class="container d-flex justify-content-start mt-3">
-                        <a href="/carts/<%= productData.id %>/addToCart" class="btn btn-primary">Add to cart</a>
+                      <div class="container d-flex justify-content-center mt-3">
+                        <a href="/carts/<%= productData.id %>/addToCart" class="btn btn-primary <%= productData.stock < 1 ? 'disable' : '' %>"  >Add to cart</a>
                         <a href="/products/<%= productData.id %>/edit" class="btn btn-warning">Edit</a>
                         <a href="/products/<%= productData.id %>/delete" class="btn btn-danger">Delete</a>
                       </div>

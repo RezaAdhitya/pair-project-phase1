@@ -2,7 +2,7 @@
     {
         "username": "Admin",
         "email": "admin@admin.com",
-        "password": "4Dm1N",
+        "password": "admin",
         "role": "Admin"
     }
 ]
