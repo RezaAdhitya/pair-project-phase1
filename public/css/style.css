@@ -9,6 +9,14 @@
   align-self: center;
 }
 
+.landing {
+  margin-top: 10rem;
+}
+
+.div {
+  margin-top: 10rem;
+}
+
 .custom-1 {
   display: flex;
   justify-content: center;

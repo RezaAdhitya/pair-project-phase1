@@ -17,7 +17,7 @@ router.get('/:productId/add', Controller.addAmount);
 router.get('/:productId/sub', Controller.subtractAmount);
 
 // confirm payment
-router.get('/:userId/confirm', isCustomer, Controller.confirmPay);
+router.get('/:cartId/confirm', isCustomer, Controller.confirmPay);
 
 // delete cart data
 router.get('/:cartId/delete', isCustomer, Controller.deleteCart);
