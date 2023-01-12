@@ -30,15 +30,22 @@
                     <div class="card" style="width: 20rem;">
                         <img src="<%= el.imageUrl %> " class="" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title"><%= el.name %></h5>
-                            <p class="card-text"><%= el.description %></p>
-                            <p class="card-text">Harga: <%= convertRp(el.price) %></p>
-                            <p class="card-text">Stock: <%= el.stock %></p>
-                            <p class="card-text">Kategori: <%= el.Category.name %></p>
-                            <p class="card-text">Penjual: <%= el.User.username %></p>
-                            <a href="/cart/:userId/add" class="btn btn-primary">Add to cart</a>
-                            <a href="/products/<%= el.id %>/edit" class="btn btn-warning">Edit</a>
-                            <a href="/products/<%= el.id %>/delete" class="btn btn-danger">Delete</a>
+                            <h5 class="card-title text-center"><%= el.name %></h5>
+                            <div class="kategori kategori-small">
+                                <%= el.Category.name %>
+                              </div>
+                            <div class="card custom-body info-harga-small">
+                                <p class="card-text price-bold-small"><%= convertRp(el.price) %></p>
+                                <% if (el.stock > 0) { %>
+                                  <a class="btn btn-success">In Stock!</a>
+                                  <% } else { %>
+                                  <a class="btn btn-danger">Out of Stock!</a>
+                                <% } %>
+                              </div>
+                              <div class="container d-flex justify-content-between mt-3">
+                                  <a href="/products/<%= el.id %>" class="btn btn-primary">View Details</a>
+                                  <a href="/cart/:userId/add" class="btn btn-success">Add to cart</a>
+                              </div>
                         </div>
                     </div>
                 <% }) %>

@@ -30,7 +30,7 @@ a + a {
   margin-left: 1rem;
 }
 
-.card > img {
+.card img {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 3;
@@ -49,4 +49,60 @@ a + a {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   height: 1rem;
+}
+
+.custom-description {
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-bottom: -0.01rem;
+}
+
+.custom-body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+}
+
+.custom-body > a, .custom-body > p {
+  display: inline;
+  margin: 0;
+}
+
+.price-bold {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.price-bold-small {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.info-harga > a {
+  cursor: default;
+  border-color: none;
+}
+
+.kategori {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin: auto;
+  border-radius: 0.5rem;
+  background-color: green;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.info-harga-small > a {
+  cursor: default;
+  border-color: none;
+  font-size: 0.5rem;
+}
+
+.kategori-small {
+  font-size: 0.8rem;
 }
